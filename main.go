@@ -6,7 +6,7 @@ import (
 	"dumbmerch/routes"
 	"fmt"
 	"net/http"
-
+	"os"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -27,7 +27,9 @@ func main() {
 
 	r.PathPrefix("/uploads").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 	routes.RouteInit(r.PathPrefix("/api/v1").Subrouter())
-
-	fmt.Println("Server is success to Connect at: 5000")
-	http.ListenAndServe("localhost:5000", handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
+	
+	port := os.Getenv("PORT")
+	
+	fmt.Println("Server is success to Connect")
+	http.ListenAndServe(":" +port, handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
 }
